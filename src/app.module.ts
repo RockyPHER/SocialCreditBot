@@ -1,0 +1,30 @@
+import { Module } from '@nestjs/common';
+import { AppService } from './app.service';
+import { IntentsBitField } from 'discord.js';
+import { NecordModule } from 'necord';
+import { BotModule } from './bot/bot.module';
+import { AppController } from './app.controller';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+@Module({
+  imports: [
+    NecordModule.forRoot({
+      token: String(process.env.DISCORD_TOKEN),
+      intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildMessageReactions,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildIntegrations,
+        IntentsBitField.Flags.GuildMessageTyping,
+        IntentsBitField.Flags.GuildMessageReactions,
+      ],
+    }),
+    BotModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
+})
+export class AppModule {}
