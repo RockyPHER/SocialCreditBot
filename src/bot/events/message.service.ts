@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
+import { Context, ContextOf, On } from 'necord';
 import { Message, PartialMessage } from 'discord.js';
-import { Context, ContextOf, On, Once } from 'necord';
-
+import { UsersService } from '../../database/users.service';
 @Injectable()
 export class MessageService {
+  constructor(private readonly usersService: UsersService) {}
+
   private readonly logger = console;
 
   @On('messageCreate')
-  public onMessageCreate(@Context() [message]: ContextOf<'messageCreate'>) {
+  public async onMessageCreate(
+    @Context() [message]: ContextOf<'messageCreate'>,
+  ) {
     if (message.author.bot) return;
+
+    // 👇 Criação de usuário se não existir
+    await this.usersService.ensureUserExists(
+      message.author.id,
+      message.author.tag,
+    );
+
+    if (message.content === 'test') {
+      await message.reply('Testado!');
+    }
+
     this.logger.log(
       `[messageCreate] ${message.author.tag}: ${message.content}`,
     );

@@ -5,6 +5,7 @@ import { NecordModule } from 'necord';
 import { BotModule } from './bot/bot.module';
 import { AppController } from './app.controller';
 import * as dotenv from 'dotenv';
+import { DatabaseModule } from './database/database.module';
 dotenv.config();
 
 @Module({
@@ -23,6 +24,7 @@ dotenv.config();
       ],
     }),
     BotModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
