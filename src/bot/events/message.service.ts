@@ -14,7 +14,6 @@ export class MessageService {
   ) {
     if (message.author.bot) return;
 
-    // 👇 Criação de usuário se não existir
     await this.usersService.ensureUserExists(
       message.author.id,
       message.author.tag,
@@ -33,6 +32,7 @@ export class MessageService {
   public onMessageUpdate(
     @Context() [oldMessage, newMessage]: ContextOf<'messageUpdate'>,
   ) {
+    if (newMessage.author.bot) return;
     const oldContent = (oldMessage as Message).content ?? '[unknown]';
     const newContent = (newMessage as Message).content ?? '[unknown]';
 
@@ -41,6 +41,7 @@ export class MessageService {
 
   @On('messageDelete')
   public onMessageDelete(@Context() [message]: ContextOf<'messageDelete'>) {
+    if (message.author?.bot) return;
     const content = (message as PartialMessage).content ?? '[sem conteúdo]';
     this.logger.log(`[messageDelete] Mensagem deletada: ${content}`);
   }
