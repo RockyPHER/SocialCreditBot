@@ -56,7 +56,7 @@ export class RenameChannelService {
     }
 
     try {
-      await (channel as TextChannel).setName(name);
+      await channel.setName(name);
       await interaction.reply(`✅ Canal renomeado para **${name}**`);
     } catch (err) {
       console.error(err);
