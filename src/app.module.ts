@@ -6,6 +6,7 @@ import { BotModule } from './bot/bot.module';
 import { AppController } from './app.controller';
 import * as dotenv from 'dotenv';
 import { DatabaseModule } from './database/database.module';
+import { UtilsModule } from './utils/utils.module';
 dotenv.config();
 
 @Module({
@@ -25,6 +26,7 @@ dotenv.config();
     }),
     BotModule,
     DatabaseModule,
+    UtilsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
