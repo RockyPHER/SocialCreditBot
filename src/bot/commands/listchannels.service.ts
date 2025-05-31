@@ -75,7 +75,6 @@ export class ListChannelsService {
     await interaction.reply({
       content:
         '```markdown\n' + (resposta || 'Nenhum canal encontrado.') + '\n```',
-      ephemeral: true,
     });
   }
 }

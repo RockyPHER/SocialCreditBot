@@ -6,5 +6,6 @@ import { EmbedPagesService } from './embedpages.service';
 @Module({
   imports: [DatabaseModule],
   providers: [SocialCreditsService, EmbedPagesService],
+  exports: [SocialCreditsService, EmbedPagesService],
 })
 export class UtilsModule {}

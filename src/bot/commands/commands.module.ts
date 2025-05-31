@@ -8,9 +8,10 @@ import { SealUserService } from './seal.service';
 import { BreakSealUserService } from './breakseal.service';
 import { ListRolesService } from './roles.service';
 import { TodoListCommands } from './todo.service';
+import { UtilsModule } from 'src/utils/utils.module';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, UtilsModule],
   providers: [
     PingService,
     GetUsersService,

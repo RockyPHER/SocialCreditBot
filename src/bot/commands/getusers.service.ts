@@ -13,6 +13,7 @@ export class GetUsersService {
   @SlashCommand({
     name: 'getusers',
     description: 'Get users from the database',
+    guilds: [String(process.env.GUILD_ID)],
   })
   public async onGetUsers(@Context() [interaction]: SlashCommandContext) {
     try {
