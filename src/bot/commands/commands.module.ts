@@ -6,6 +6,8 @@ import { DatabaseModule } from 'src/database/database.module';
 import { RenameChannelService } from './rename.service';
 import { SealUserService } from './seal.service';
 import { BreakSealUserService } from './breakseal.service';
+import { ListRolesService } from './roles.service';
+import { TodoListCommands } from './todo.service';
 
 @Module({
   imports: [DatabaseModule],
@@ -16,6 +18,8 @@ import { BreakSealUserService } from './breakseal.service';
     RenameChannelService,
     SealUserService,
     BreakSealUserService,
+    ListRolesService,
+    TodoListCommands,
   ],
 })
 export class CommandsModule {}

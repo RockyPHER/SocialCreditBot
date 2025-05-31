@@ -57,7 +57,10 @@ export class RenameChannelService {
 
     try {
       await channel.setName(name);
-      await interaction.reply(`✅ Canal renomeado para **${name}**`);
+      await interaction.reply({
+        content: `✅ Canal renomeado para **${name}**`,
+        ephemeral: true,
+      });
     } catch (err) {
       console.error(err);
       await interaction.reply({
