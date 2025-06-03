@@ -1,0 +1,4 @@
+fastapi
+uvicorn
+spacy
+pt_core_news_sm
