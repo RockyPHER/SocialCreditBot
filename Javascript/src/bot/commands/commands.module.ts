@@ -9,6 +9,7 @@ import { BreakSealUserService } from './breakseal.service';
 import { ListRolesService } from './roles.service';
 import { TodoListCommands } from './todo.service';
 import { UtilsModule } from 'src/utils/utils.module';
+import { AddImageCommands } from './add.service';
 
 @Module({
   imports: [DatabaseModule, UtilsModule],
@@ -21,6 +22,7 @@ import { UtilsModule } from 'src/utils/utils.module';
     BreakSealUserService,
     ListRolesService,
     TodoListCommands,
+    AddImageCommands,
   ],
 })
 export class CommandsModule {}

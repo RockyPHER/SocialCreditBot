@@ -9,12 +9,10 @@ import {
 import {
   ActionRowBuilder,
   ButtonBuilder,
-  ButtonInteraction,
   ButtonStyle,
   CommandInteraction,
   EmbedBuilder,
   StringSelectMenuBuilder,
-  StringSelectMenuInteraction,
 } from 'discord.js';
 
 export const TodoListCommandDecorator = createCommandGroupDecorator({
@@ -49,6 +47,10 @@ class TaskIndexDTO {
 @TodoListCommandDecorator()
 export class TodoListCommands {
   private tasks: TaskDTO[] = [];
+
+  private activeCollector: ReturnType<
+    import('discord.js').Message['createMessageComponentCollector']
+  > | null = null;
 
   private generateEmbed(): EmbedBuilder {
     if (this.tasks.length === 0) {
@@ -110,6 +112,11 @@ export class TodoListCommands {
   public async onList(@Context() [interaction]: [CommandInteraction]) {
     const embed = this.generateEmbed();
 
+    if (this.activeCollector) {
+      this.activeCollector.stop(); // Finaliza o collector anterior
+      this.activeCollector = null;
+    }
+
     const components: (
       | ActionRowBuilder<ButtonBuilder>
       | ActionRowBuilder<StringSelectMenuBuilder>
@@ -133,8 +140,9 @@ export class TodoListCommands {
 
     const collector = message.createMessageComponentCollector({
       filter: (i) => i.user.id === interaction.user.id,
-      time: 60_000,
+      time: 45_000,
     });
+    this.activeCollector = collector;
 
     collector.on('collect', async (i) => {
       if (i.isStringSelectMenu() && i.customId === 'check_task') {
