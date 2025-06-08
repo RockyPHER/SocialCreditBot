@@ -6,14 +6,7 @@ import {
   ComponentType,
   Role,
 } from 'discord.js';
-import {
-  Context,
-  createCommandGroupDecorator,
-  NumberOption,
-  Options,
-  RoleOption,
-  Subcommand,
-} from 'necord';
+import { Context, createCommandGroupDecorator, Subcommand } from 'necord';
 
 export const RolesCommandDecorator = createCommandGroupDecorator({
   name: 'roles',

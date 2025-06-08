@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import * as dotenv from 'dotenv';
 import { DatabaseModule } from './database/database.module';
 import { UtilsModule } from './utils/utils.module';
+import { HttpModule } from '@nestjs/axios';
 dotenv.config();
 
 @Module({
@@ -27,6 +28,7 @@ dotenv.config();
     BotModule,
     DatabaseModule,
     UtilsModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [AppService],
