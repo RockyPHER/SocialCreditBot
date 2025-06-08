@@ -6,7 +6,7 @@ import { DatabaseModule } from 'src/database/database.module';
 import { RenameChannelService } from './rename.service';
 import { SealUserService } from './seal.service';
 import { BreakSealUserService } from './breakseal.service';
-import { ListRolesService } from './roles.service';
+import { RolesCommands } from './roles.service';
 import { TodoListCommands } from './todo.service';
 import { UtilsModule } from 'src/utils/utils.module';
 import { AddImageCommands } from './add.service';
@@ -20,7 +20,7 @@ import { AddImageCommands } from './add.service';
     RenameChannelService,
     SealUserService,
     BreakSealUserService,
-    ListRolesService,
+    RolesCommands,
     TodoListCommands,
     AddImageCommands,
   ],

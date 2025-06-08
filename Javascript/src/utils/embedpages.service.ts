@@ -4,17 +4,20 @@ import {
   EmbedBuilder,
 } from '@discordjs/builders';
 import { Injectable } from '@nestjs/common';
-import { ButtonStyle, ComponentType } from 'discord.js';
+import { ButtonInteraction, ButtonStyle, ComponentType } from 'discord.js';
 import { Context, SlashCommandContext } from 'necord';
 
 @Injectable()
 export class EmbedPagesService {
   public async generateEmbedPages<T>(
-    @Context() [interaction]: SlashCommandContext,
+    @Context()
+    [interaction]: SlashCommandContext,
     embedTitle: string,
     items: T[],
     pageSize: number,
     formatItem: (item: T, index: number) => string, // <-- função genérica
+    extraButton?: ButtonBuilder,
+    buttonCollect?: (interaction: ButtonInteraction) => Promise<void>,
   ): Promise<void> {
     const totalPages = Math.ceil(items.length / pageSize);
     let currentPage = 0;
@@ -50,10 +53,15 @@ export class EmbedPagesService {
           .setStyle(ButtonStyle.Primary)
           .setDisabled(page >= totalPages - 1),
       );
+    const row = getActionRow(currentPage);
+
+    if (extraButton) {
+      row.addComponents(extraButton);
+    }
 
     await interaction.reply({
       embeds: [getPageEmbed(currentPage)],
-      components: [getActionRow(currentPage)],
+      components: [row], // usa o `row` com o botão extra
     });
 
     const message = await interaction.fetchReply();
@@ -77,10 +85,17 @@ export class EmbedPagesService {
       else if (btnInteraction.customId === 'prev' && currentPage > 0)
         currentPage--;
 
+      const updatedRow = getActionRow(currentPage);
+      if (extraButton) updatedRow.addComponents(extraButton);
+
       await interaction.editReply({
         embeds: [getPageEmbed(currentPage)],
-        components: [getActionRow(currentPage)],
+        components: [updatedRow], // agora com botão extra também nas edições
       });
+
+      if (buttonCollect) {
+        buttonCollect(btnInteraction);
+      }
     });
 
     collector.on('end', () => {

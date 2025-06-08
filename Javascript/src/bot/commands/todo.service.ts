@@ -69,9 +69,14 @@ export class TodoListCommands {
       )
       .join('\n');
 
+    const fields = this.tasks.map((task, i) => ({
+      name: `${task.completed ? '✅ ~~' : '🔲'} ${i + 1}. ${task.title}${task.completed ? '~~' : ''}`,
+      value: task.completed ? 'Concluída' : 'Pendente',
+    }));
+
     return new EmbedBuilder()
       .setTitle('📋 Lista de Tarefas')
-      .setDescription(description)
+      .setFields(fields)
       .setColor(0x00bfff);
   }
 
