@@ -4,12 +4,11 @@ import { GetUsersService } from './getusers.service';
 import { ListChannelsService } from './listchannels.service';
 import { DatabaseModule } from 'src/database/database.module';
 import { RenameChannelService } from './rename.service';
-import { SealUserService } from './seal.service';
-import { BreakSealUserService } from './breakseal.service';
 import { RolesCommands } from './roles.service';
 import { TodoListCommands } from './todo.service';
 import { UtilsModule } from 'src/utils/utils.module';
 import { AddImageCommands } from './add.service';
+import { SealUserCommands } from './seal.service';
 
 @Module({
   imports: [DatabaseModule, UtilsModule],
@@ -18,8 +17,7 @@ import { AddImageCommands } from './add.service';
     GetUsersService,
     ListChannelsService,
     RenameChannelService,
-    SealUserService,
-    BreakSealUserService,
+    SealUserCommands,
     RolesCommands,
     TodoListCommands,
     AddImageCommands,

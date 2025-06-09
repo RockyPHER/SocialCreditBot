@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Context, SlashCommand, SlashCommandContext } from 'necord';
-import { UsersService } from '../../database/users.service';
+import { UsersService } from '../../database/users/users.service';
 import { EmbedPagesService } from 'src/utils/embedpages.service';
+
+interface User {
+  userid: string;
+  socialcredits: number;
+}
 
 @Injectable()
 export class GetUsersService {
@@ -17,7 +22,7 @@ export class GetUsersService {
   })
   public async onGetUsers(@Context() [interaction]: SlashCommandContext) {
     try {
-      const users = await this.usersService.getUsers();
+      const users: User[] = await this.usersService.getUsers();
 
       if (!users.length) {
         return interaction.reply({
@@ -26,29 +31,21 @@ export class GetUsersService {
         });
       }
 
-      const sortedUsers = users.sort(
+      const sortedUsers = [...users].sort(
         (a, b) => b.socialcredits - a.socialcredits,
       );
-
-      interface User {
-        userid: string;
-        socialcredits: number;
-      }
 
       const formatUser = (user: User, index: number): string =>
         user.socialcredits === 0
           ? `**•** \`${user.socialcredits}\` — <@${user.userid}>`
-          : `**${index + 1}** \`${user.socialcredits}\` — <@${user.userid}>`;
+          : `**${index + 1}.** \`${user.socialcredits}\` — <@${user.userid}>`;
 
       await this.embedPagesService.generateEmbedPages(
-        [interaction], // contexto do Necord
-        'Ranking de Créditos Sociais', // título do embed
-        sortedUsers, // array de dados
-        10, // tamanho da página
-        (
-          user,
-          index, // função que formata cada item
-        ) => formatUser(user, index), // formatação do usuário
+        [interaction],
+        'Ranking de Créditos Sociais',
+        sortedUsers,
+        20,
+        formatUser,
       );
     } catch (error) {
       console.error('Erro ao buscar usuários:', error);

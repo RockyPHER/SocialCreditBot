@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Context, ContextOf, On } from 'necord';
 import { Message, PartialMessage } from 'discord.js';
-import { UsersService } from '../../database/users.service';
+import { UsersService } from '../../database/users/users.service';
+import { MessageFilter } from 'src/utils/messagefilter.service';
 @Injectable()
 export class MessageService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly messageFilter: MessageFilter,
+  ) {}
 
   private readonly logger = console;
 
@@ -18,6 +22,20 @@ export class MessageService {
       message.author.id,
       message.author.tag,
     );
+
+    if (
+      message.content.startsWith('$') ||
+      message.content.startsWith('.') ||
+      message.content.startsWith('m!')
+    )
+      return;
+
+    if (message.content != '') {
+      await this.messageFilter.rateSocialCredits(
+        message.content,
+        message.author.id,
+      );
+    }
 
     if (message.content === 'test') {
       await message.reply('Testado!');
