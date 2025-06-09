@@ -40,6 +40,7 @@ export class BrainJSService {
       const tokenizedInput = this.toTokenObject(lemmatizedWords);
       const output = sentimentNet.run(tokenizedInput);
 
+      console.log(output);
       const rounded = Object.entries(output).reduce(
         (acc, [key, value]) => {
           acc[key] = Math.round(value ?? 0);
@@ -61,7 +62,7 @@ export class BrainJSService {
         case 'negativo':
           return -10;
         default:
-          return 0;
+          return 1;
       }
     } catch (error) {
       console.error(
